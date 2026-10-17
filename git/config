@@ -1,0 +1,36 @@
+[alias]
+	s = status
+	ss = status -s
+	sw = switch
+	c = commit -m
+	cm = commit
+	a = add
+	aa = add -A
+	ac = commit -am
+	ps = push
+	pl = pull
+	b = branch
+	co = checkout
+	d = diff
+	l = log
+	lo = log --oneline
+	f = fetch
+	m = merge
+	rs = restore
+	rsst = restore --staged
+	r = reset
+  st = stash
+  sta = stash apply
+
+[init]
+	defaultBranch = main
+
+[pull]
+	ff = only
+
+[merge]
+	conflictstyle = diff3
+
+[diff]
+	colorMoved = default
+

@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# コミットの前に、ステージされた内容に秘密情報と仕事の識別子が無いかを調べ、見つかったらコミットを止める。
+# 仕事の識別子の一覧はそれ自体が仕事の情報なので、リポジトリの外の deny-patterns.txt に置く。
+# 有効にするには、リポジトリで git config core.hooksPath .githooks を実行する。
+set -euo pipefail
+
+patterns="${DOTFILES_DENY_PATTERNS:-$HOME/.config/dotfiles/deny-patterns.txt}"
+
+# betterleaks は Homebrew で入れる想定だが、mise で入れた環境でも動かせるよう mise からも探す。
+betterleaks=$(command -v betterleaks || { command -v mise >/dev/null && mise which betterleaks 2>/dev/null; } || true)
+if [ -z "$betterleaks" ]; then
+  echo "pre-commit: betterleaks が見つかりません。brew install betterleaks で入れてください。" >&2
+  exit 1
+fi
+
+if ! "$betterleaks" git --staged --no-banner --redact --log-level warn .; then
+  echo "pre-commit: betterleaks が秘密情報らしき文字列を見つけたので、コミットを止めました。" >&2
+  exit 1
+fi
+
+if [ ! -f "$patterns" ]; then
+  echo "pre-commit: $patterns がありません。仕事の識別子を 1 行に 1 つの正規表現で書いて置いてください。" >&2
+  exit 1
+fi
+
+# 空行と # で始まる行は、パターンとして扱わない。
+rules=$(grep -vE '^[[:space:]]*(#|$)' "$patterns" || true)
+if [ -z "$rules" ]; then
+  echo "pre-commit: $patterns に有効なパターンがありません。" >&2
+  exit 1
+fi
+
+# 追加された行と、ステージされたファイルのパスの両方を調べる。
+added=$(git diff --cached --no-color -U0 --diff-filter=ACMR | grep -E '^\+' | grep -vE '^\+\+\+ ' || true)
+paths=$(git diff --cached --name-only --diff-filter=ACMR)
+
+hits=$(printf '%s\n%s\n' "$added" "$paths" | grep -nE -f <(printf '%s\n' "$rules") || true)
+if [ -n "$hits" ]; then
+  echo "pre-commit: deny-patterns.txt の語がステージされた内容に含まれているので、コミットを止めました。" >&2
+  printf '%s\n' "$hits" | cut -c1-200 >&2
+  exit 1
+fi

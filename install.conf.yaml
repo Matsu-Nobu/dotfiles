@@ -1,0 +1,59 @@
+- defaults:
+    link:
+      relink: true
+      create: true
+
+- clean: ['~']
+
+- create:
+    - ~/.config
+
+- link:
+    ~/.zshrc:
+      path: zsh/.zshrc
+    ~/.config/zsh/aliases:
+      path: zsh/aliases
+    ~/.fzf.zsh:
+      path: fzf/.fzf.zsh
+    ~/.config/sheldon:
+      path: sheldon
+    ~/.config/starship.toml:
+      path: starship.toml
+    ~/.config/direnv:
+      path: direnv
+    ~/.config/wezterm:
+      path: wezterm
+    ~/.config/nvim:
+      path: nvim
+    ~/.config/git:
+      path: git
+    ~/.config/gh/config.yml:
+      path: gh/config.yml
+    ~/.config/karabiner:
+      if: '[ "$(uname)" = Darwin ]'
+      path: karabiner
+    ~/bin/task:
+      path: bin/task
+    ~/.claude/CLAUDE.md:
+      path: claude/CLAUDE.md
+    ~/.claude/settings.json:
+      path: claude/settings.json
+    ~/.claude/keybindings.json:
+      path: claude/keybindings.json
+    ~/.claude/rules:
+      path: claude/rules
+    ~/.claude/hooks:
+      path: claude/hooks
+    ~/.claude/statusline:
+      path: claude/statusline
+    ~/.claude/bin:
+      path: claude/bin
+    ~/.claude/commands/eod.md:
+      path: claude/commands/eod.md
+    ~/.claude/commands/reflect.md:
+      path: claude/commands/reflect.md
+    ~/.claude/skills/thorough-review:
+      path: claude/skills/thorough-review
+
+- shell:
+  - [git submodule update --init dotbot, dotbot を取得]

@@ -1,0 +1,37 @@
+#!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-run --allow-sys
+
+const sub = Deno.args[0];
+const rest = Deno.args.slice(1);
+
+const map: Record<string, string> = {
+  new: "new.ts",
+  plan: "plan.ts",
+  start: "start.ts",
+  list: "list.ts",
+  ensure: "ensure.ts",
+};
+
+if (!sub || !(sub in map)) {
+  console.error("Usage: task {new|plan|start|list|ensure} [args...]");
+  Deno.exit(2);
+}
+
+const vault = Deno.env.get("OBSIDIAN_VAULT") ?? `${Deno.env.get("HOME")}/workspace/obsidian`;
+const scriptPath = `${vault}/scripts/${map[sub]}`;
+
+try {
+  await Deno.stat(scriptPath);
+} catch (e) {
+  if (!(e instanceof Deno.errors.NotFound)) throw e;
+  console.error(`task: ${scriptPath} がありません。Obsidian の vault を ${vault} に置くか、環境変数 OBSIDIAN_VAULT に vault の場所を設定してください。`);
+  Deno.exit(1);
+}
+
+const cmd = new Deno.Command("deno", {
+  args: ["run", "--allow-read", "--allow-write", "--allow-env", "--allow-run", "--allow-sys", scriptPath, ...rest],
+  stdin: "inherit",
+  stdout: "inherit",
+  stderr: "inherit",
+});
+const status = await cmd.spawn().status;
+Deno.exit(status.code);

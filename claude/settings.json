@@ -1,0 +1,315 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "DISABLE_AUTOUPDATER": "1",
+    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1"
+  },
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "WebFetch",
+      "WebSearch",
+      "Bash(git:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(wc:*)",
+      "Bash(which:*)",
+      "Bash(echo:*)",
+      "Bash(pwd:*)",
+      "Bash(date:*)",
+      "Bash(whoami:*)",
+      "Bash(hostname:*)",
+      "Bash(uname:*)",
+      "Bash(file:*)",
+      "Bash(stat:*)",
+      "Bash(du:*)",
+      "Bash(df:*)",
+      "Bash(jq:*)",
+      "Bash(brew:*)",
+      "Bash(bundle exec rspec:*)",
+      "Bash(bundle exec rake:*)",
+      "Read"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/*.env)",
+      "Read(**/*.env.*)",
+      "Read(//**/.env)",
+      "Read(//**/.env.*)",
+      "Read(./secrets/**)",
+      "Read(secrets/**)",
+      "Read(**/secrets/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.ssh/**)",
+      "Read(~/.config/gh/**)",
+      "Read(~/.config/gcloud/**)",
+      "Read(~/.docker/**)",
+      "Read(~/.git-credentials)",
+      "Read(~/.config/git/credentials)",
+      "Read(~/.netrc)",
+      "Read(~/.npmrc)",
+      "Read(~/.pypirc)",
+      "Read(~/.gem/credentials)",
+      "Read(~/.bundle/config)",
+      "Read(./.bundle/config)",
+      "Read(.bundle/config)",
+      "Read(**/.bundle/config)",
+      "Read(~/.cargo/credentials*)",
+      "Skill(deploy *)",
+      "Skill(release *)",
+      "Skill(publish *)",
+      "Bash(terraform apply*)",
+      "Bash(terraform destroy*)",
+      "Bash(terraform import*)",
+      "Bash(terraform state*)",
+      "Bash(terraform taint*)",
+      "Bash(terraform force-unlock*)",
+      "Bash(packer build*)",
+      "Bash(aws * delete*)",
+      "Bash(aws * put*)",
+      "Bash(aws * update*)",
+      "Bash(aws iam *)",
+      "Bash(aws organizations *)",
+      "Bash(aws sts assume-role*)",
+      "Bash(aws sso-admin *)",
+      "Bash(aws identitystore *)",
+      "Bash(aws secretsmanager *)",
+      "Bash(aws ssm get-parameter*)",
+      "Bash(aws ssm get-parameters*)",
+      "Bash(aws ssm put-parameter*)",
+      "Bash(aws ssm delete-parameter*)",
+      "Bash(aws kms disable-key*)",
+      "Bash(aws kms schedule-key-deletion*)",
+      "Bash(aws ecs register-task-definition*)",
+      "Bash(aws ecs deregister-task-definition*)",
+      "Bash(aws ecs update-service*)",
+      "Bash(aws ecs run-task*)",
+      "Bash(aws rds-data execute-statement*)",
+      "Bash(aws s3 rm*)",
+      "Bash(aws s3 sync * --delete*)",
+      "Bash(aws s3api delete*)",
+      "Bash(aws s3api put-object*)",
+      "Bash(aws ec2 deregister-image*)",
+      "Bash(aws ec2 delete-snapshot*)",
+      "Bash(aws ec2 terminate-instances*)",
+      "Bash(aws cloudformation deploy*)",
+      "Bash(aws cloudformation update-stack*)",
+      "Bash(aws cloudformation delete-stack*)",
+      "Bash(gh secret set*)",
+      "Bash(gh secret delete*)",
+      "Bash(gh variable set*)",
+      "Bash(gh variable delete*)",
+      "Bash(gh workflow disable*)",
+      "Bash(gh workflow enable*)",
+      "Bash(gh workflow delete*)",
+      "Bash(gh ruleset *)",
+      "Bash(gh repo delete*)",
+      "Bash(gh repo archive*)",
+      "Bash(gh repo edit*)",
+      "Bash(gh auth token*)",
+      "Bash(gh api --method POST *)",
+      "Bash(gh api --method PUT *)",
+      "Bash(gh api --method PATCH *)",
+      "Bash(gh api --method DELETE *)",
+      "Bash(gh api -X POST *)",
+      "Bash(gh api -X PUT *)",
+      "Bash(gh api -X PATCH *)",
+      "Bash(gh api -X DELETE *)",
+      "Bash(git push --force*)",
+      "Bash(git push * --force*)",
+      "Bash(git push -f *)",
+      "Bash(git push * -f *)",
+      "Bash(git push --mirror *)",
+      "Bash(git push --delete *)",
+      "Bash(git push * --delete *)",
+      "Bash(git push * :*)",
+      "Bash(git credential*)",
+      "Bash(git config --global credential.helper store*)",
+      "Bash(git config --global * credential.helper store*)",
+      "Bash(git update-index --assume-unchanged*)",
+      "Bash(git update-index --skip-worktree*)",
+      "Bash(curl * | sh)",
+      "Bash(curl * | bash)",
+      "Bash(wget * | sh)",
+      "Bash(wget * | bash)",
+      "Bash(npm publish*)",
+      "Bash(cargo publish*)",
+      "Bash(gem push*)",
+      "Bash(twine upload*)",
+      "Bash(docker push*)"
+    ],
+    "ask": [
+      "Bash(git push*)",
+      "Bash(gh pr create*)",
+      "Bash(gh pr merge*)",
+      "Bash(gh release create*)",
+      "Bash(gh release upload*)",
+      "Bash(gh workflow run*)",
+      "Bash(gh run rerun*)",
+      "Bash(gh run cancel*)",
+      "Bash(terraform plan*)",
+      "Bash(git config --global*)",
+      "Bash(git config --system*)",
+      "Bash(wget *)",
+      "Edit(.gitignore)",
+      "Edit(**/.gitignore)",
+      "Edit(.github/workflows/**)",
+      "Edit(.github/actions/**)",
+      "Edit(.github/dependabot.yml)",
+      "Edit(.github/CODEOWNERS)"
+    ],
+    "disableBypassPermissionsMode": "disable",
+    "_disableAutoMode_DISABLED_BECAUSE": "10秒に一回承認を求められて生産性が著しく低下するため auto mode を無効化しない（元値: disableAutoMode=disable）"
+  },
+  "enableAllProjectMcpServers": true,
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/notify.ts"
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/continuation-guard.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/language-guard.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/notify.ts"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/notify.ts"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/task-session-end.ts"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/inject-rules.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__claude_ai_Atlassian__updateConfluencePage|mcp__claude_ai_Atlassian__createConfluencePage",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/inject-confluence-rules.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/block-rails-db.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__claude_ai_Atlassian__(createJiraIssue|editJiraIssue|addCommentToJiraIssue|createConfluencePage|updateConfluencePage|createConfluenceFooterComment|createConfluenceInlineComment)|mcp__github__(create_pull_request|create_pull_request_review|add_issue_comment|update_issue)|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/inject-writing-rules.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/language-guard.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/language-reminder.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline/statusline.ts"
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "slack@claude-plugins-official": true
+  },
+  "language": "Japanese",
+  "effortLevel": "medium",
+  "skipWorkflowUsageWarning": true,
+  "theme": "dark",
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
+  "autoMode": {
+    "allow": [
+      "$defaults"
+    ],
+    "soft_deny": [
+      "$defaults",
+      "Bash(aws * --profile *prod*)"
+    ]
+  }
+}

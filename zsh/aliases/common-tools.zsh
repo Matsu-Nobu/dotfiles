@@ -1,0 +1,13 @@
+# Common tool shortcuts
+alias g="git"
+alias nv="nvim"
+alias mk="make"
+alias py="python3"
+alias ve="virtualenv"
+alias rb="ruby"
+alias ra="rails"
+alias tf="terraform"
+alias pn="pnpm"
+alias cl="claude"
+alias dc="docker compose"
+alias nvs="nvidia-smi"
