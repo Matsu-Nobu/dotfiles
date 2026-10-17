@@ -42,12 +42,14 @@ brew "lefthook"
 brew "actionlint"
 brew "trivy"
 brew "betterleaks"
-brew "terraform-linters/tap/tflint"
 
 if OS.mac?
+  # tflint の開発元の tap は、macOS 用の cask だけを配布している。
+  cask "terraform-linters/tap/tflint"
   # 正式版の WezTerm は今の macOS で通知を表示できないので、開発版を入れる。
   cask "wezterm@nightly"
-  cask "karabiner-elements"
+  # 手で入れた Karabiner-Elements を Homebrew で入れ直すと管理者のパスワードが要るので、既にあれば飛ばす。
+  cask "karabiner-elements" unless File.exist?("/Applications/Karabiner-Elements.app")
   cask "font-hack-nerd-font"
   cask "font-hackgen-nerd"
 end

@@ -154,6 +154,10 @@ stage_brew_bundle() {
     fi
     die "brew がありません。先に homebrew の段階を実行してください"
   fi
+  # Homebrew は公式以外の tap のパッケージを、信頼すると明示しないと読み込まない。
+  if [ "$(uname)" = Darwin ]; then
+    run_system brew trust --cask terraform-linters/tap/tflint
+  fi
   if brew bundle check --file="$REPO_DIR/Brewfile" >/dev/null 2>&1; then
     skipped "Brewfile のパッケージはすべて入っている"
     return
