@@ -48,4 +48,6 @@ if OS.mac?
   # 正式版の WezTerm は今の macOS で通知を表示できないので、開発版を入れる。
   cask "wezterm@nightly"
   cask "karabiner-elements"
+  cask "font-hack-nerd-font"
+  cask "font-hackgen-nerd"
 end

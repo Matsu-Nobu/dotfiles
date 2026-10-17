@@ -13,7 +13,6 @@ $ErrorActionPreference = "Stop"
 $env:WSL_UTF8 = "1"
 
 $Distro = "Ubuntu"
-$FontName = "MesloLGS Nerd Font Mono"
 
 function Write-Stage([string]$Name) {
     Write-Host ""
@@ -98,43 +97,57 @@ function Install-WezTerm {
     Write-Did "WezTerm の開発版を入れた"
 }
 
-function Install-Font {
-    Write-Stage "フォント"
+# フォントの zip を取得し、ファイル名が $FilePattern に一致するフォントを登録する。
+# ユーザーのフォントのフォルダに置き、レジストリに登録すると、管理者の権限なしでそのユーザーだけが使える。
+function Install-FontZip([string]$FontName, [string]$ZipUrl, [string]$FilePattern) {
     $fontDir = Join-Path $env:LOCALAPPDATA "Microsoft\Windows\Fonts"
     $registry = "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts"
     $installed = Get-ItemProperty -Path $registry -ErrorAction SilentlyContinue |
         Get-Member -MemberType NoteProperty |
-        Where-Object { $_.Name -like "$FontName*" }
+        Where-Object { $_.Name -like "$FontName *" }
     if ($installed) {
         Write-Skipped "$FontName は入っている"
         return
     }
 
-    $tmp = Join-Path $env:TEMP ("meslo-" + [guid]::NewGuid())
+    $tmp = Join-Path $env:TEMP ("font-" + [guid]::NewGuid())
     New-Item -ItemType Directory -Path $tmp | Out-Null
     try {
-        $zip = Join-Path $tmp "Meslo.zip"
-        Invoke-WebRequest -Uri "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip" -OutFile $zip -UseBasicParsing
+        $zip = Join-Path $tmp "font.zip"
+        Invoke-WebRequest -Uri $ZipUrl -OutFile $zip -UseBasicParsing
         Expand-Archive -Path $zip -DestinationPath $tmp
         New-Item -ItemType Directory -Path $fontDir -Force | Out-Null
         if (-not (Test-Path $registry)) {
             New-Item -Path $registry -Force | Out-Null
         }
-        # ユーザーのフォントのフォルダに置き、レジストリに登録すると、管理者の権限なしでそのユーザーだけが使える。
-        $files = Get-ChildItem -Path $tmp -Filter "MesloLGSNerdFontMono-*.ttf"
+        $files = Get-ChildItem -Path $tmp -Recurse -Filter $FilePattern
         if (-not $files) {
-            throw "Meslo.zip に MesloLGSNerdFontMono-*.ttf がありませんでした"
+            throw "$ZipUrl に $FilePattern に一致するファイルがありませんでした"
         }
         foreach ($file in $files) {
             $dest = Join-Path $fontDir $file.Name
             Copy-Item -Path $file.FullName -Destination $dest -Force
-            $style = $file.BaseName -replace "^MesloLGSNerdFontMono-", ""
+            $style = $file.BaseName -replace "^.*-", ""
             New-ItemProperty -Path $registry -Name "$FontName $style (TrueType)" -Value $dest -PropertyType String -Force | Out-Null
         }
         Write-Did "$FontName を $fontDir に入れた"
     } finally {
         Remove-Item -Path $tmp -Recurse -Force -ErrorAction SilentlyContinue
     }
+}
+
+# wezterm/config/fonts.lua が使う 2 つのフォントを入れる。
+function Install-Font {
+    Write-Stage "フォント"
+    Install-FontZip "Hack Nerd Font Mono" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip" "HackNerdFontMono-*.ttf"
+
+    # HackGen のリリースの zip はファイル名にバージョンを含むので、最新のリリースから URL を取得する。
+    $release = Invoke-RestMethod -Uri "https://api.github.com/repos/yuru7/HackGen/releases/latest" -UseBasicParsing
+    $asset = $release.assets | Where-Object { $_.name -match "^HackGen_NF_.*\.zip$" } | Select-Object -First 1
+    if (-not $asset) {
+        throw "HackGen の最新のリリースに HackGen_NF_*.zip がありませんでした"
+    }
+    Install-FontZip "HackGen Console NF" $asset.browser_download_url "HackGenConsoleNF-*.ttf"
 }
 
 function Invoke-DotfilesSetup {
