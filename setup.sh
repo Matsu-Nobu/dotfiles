@@ -10,7 +10,7 @@
 #   SETUP_DRY_RUN=1         パッケージの導入・ログインシェルの変更・システム設定の変更・Ruby のビルドを実行せず、実行するコマンドを表示する。
 #                           ホームディレクトリの中のリンクと雛形のファイルは作る。
 #   DOTFILES_RUBY_SCAN_DIR  .ruby-version を探すディレクトリ。既定は ~/workspace。
-#   GIT_USER_NAME, GIT_USER_EMAIL  ~/.gitconfig に書く名前とメールアドレス。無ければ対話で尋ねる。
+#   GIT_USER_NAME, GIT_USER_EMAIL  ~/.gitconfig に書く名前とメールアドレス。無ければ、ターミナルに入力を求める文を表示して受け取る。
 #
 # macOS の /bin/bash は 3.2 なので、連想配列や mapfile のような bash 4 以降の機能を使わない。
 set -euo pipefail
@@ -124,7 +124,7 @@ stage_prereqs() {
     skipped "必要な apt のパッケージは入っている"
     return
   fi
-  echo "[prereqs] apt でパッケージを入れるため、sudo のパスワードを尋ねることがあります。"
+  echo "[prereqs] apt でパッケージを入れるため、sudo がパスワードの入力を求めることがあります。"
   # shellcheck disable=SC2086 # パッケージ名を 1 つずつの引数に分けるため、意図して分割する。
   run_system sudo apt-get update && run_system sudo apt-get install -y $missing
   did_system "apt で入れた:$missing"
@@ -227,7 +227,7 @@ stage_login_shell() {
     return
   fi
   if ! grep -qx "$zsh_path" /etc/shells; then
-    echo "[login_shell] $zsh_path を /etc/shells に足すため、sudo のパスワードを尋ねることがあります。"
+    echo "[login_shell] $zsh_path を /etc/shells に足すため、sudo がパスワードの入力を求めることがあります。"
     run_system sudo sh -c "echo '$zsh_path' >> /etc/shells"
   fi
   if [ "$IS_LINUX" = "1" ]; then
@@ -291,7 +291,7 @@ stage_gitconfig() {
       env_value="${GIT_USER_EMAIL:-}"
     fi
     if ! value=$(ask "$prompt" "$env_value"); then
-      skipped "$key を尋ねられなかった（端末から実行していない）。後で git config --file ~/.gitconfig $key <値> を実行してください"
+      skipped "$key の入力を受け取れなかった（端末から実行していない）。後で git config --file ~/.gitconfig $key <値> を実行してください"
       continue
     fi
     git config --file "$file" "$key" "$value"

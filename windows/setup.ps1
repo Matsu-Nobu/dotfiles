@@ -159,7 +159,7 @@ function Invoke-DotfilesSetup {
         if ($Repo -eq "") {
             $script:Repo = Read-Host "clone するリポジトリ (<GitHub のユーザー名>/dotfiles)"
         }
-        Write-Host "WSL の中に gh を入れるため、Ubuntu の sudo のパスワードを尋ねることがあります。"
+        Write-Host "WSL の中に gh を入れるため、Ubuntu の sudo がパスワードの入力を求めることがあります。"
         Invoke-Wsl "command -v gh >/dev/null || (sudo apt-get update && sudo apt-get install -y gh)"
         Write-Host "gh auth login を実行します。画面の案内に従って GitHub にログインしてください。"
         Invoke-Wsl "gh auth status >/dev/null 2>&1 || gh auth login"
