@@ -1,5 +1,5 @@
 -- Windows 側の WezTerm が、WSL の Ubuntu の中に clone した dotfiles の wezterm/ の設定を読むための入口。
--- windows/setup.ps1 が __WSL_USER__ を WSL のユーザー名に置き換えて、%USERPROFILE%\.wezterm.lua に書き出す。
+-- windows/setup.ps1 が __WSL_USER__ を WSL のユーザー名に置き換えて、%USERPROFILE%\.wezterm.lua に出力する。
 local wezterm = require('wezterm')
 
 local dir = [[\\wsl.localhost\Ubuntu\home\__WSL_USER__\dotfiles\wezterm]]

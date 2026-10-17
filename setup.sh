@@ -10,7 +10,7 @@
 #   SETUP_DRY_RUN=1         パッケージの導入・ログインシェルの変更・システム設定の変更・Ruby のビルドを実行せず、実行するコマンドを表示する。
 #                           ホームディレクトリの中のリンクと雛形のファイルは作る。
 #   DOTFILES_RUBY_SCAN_DIR  .ruby-version を探すディレクトリ。既定は ~/workspace。
-#   GIT_USER_NAME, GIT_USER_EMAIL  ~/.gitconfig に書く名前とメールアドレス。無ければ、ターミナルに入力を求める文を表示して受け取る。
+#   GIT_USER_NAME, GIT_USER_EMAIL  ~/.gitconfig に記入する名前とメールアドレス。無ければ、ターミナルに入力を求める文を表示して受け取る。
 #
 # macOS の /bin/bash は 3.2 なので、連想配列や mapfile のような bash 4 以降の機能を使わない。
 set -euo pipefail
@@ -166,7 +166,7 @@ stage_brew_bundle() {
   did_system "Brewfile のパッケージを入れた"
 }
 
-# install.conf.yaml の link: に書いたリンクの置き場所を、1 行に 1 つずつ $HOME を展開して出す。
+# install.conf.yaml の link: に記載したリンクの配置を、1 行に 1 つずつ $HOME を展開して出力する。
 link_targets() {
   awk '
     /^- link:/ { in_link = 1; next }
@@ -249,7 +249,7 @@ stage_zshrc_local() {
     umask 077
     cat > "$file" <<'EOF'
 # このマシンだけで使う zsh の設定。~/.zshrc の最後で読み込まれる。
-# トークンのような秘密情報と、仕事用の環境変数・alias はここに書く。このファイルは dotfiles リポジトリに入れない。
+# トークンのような秘密情報と、仕事用の環境変数・alias はここに記入する。このファイルは dotfiles リポジトリに入れない。
 #
 # 例:
 # export ATLASSIAN_SITE="<Confluence のサイトのホスト名>"
@@ -275,7 +275,7 @@ ask() {
 
 stage_gitconfig() {
   stage_start gitconfig
-  # git config --global は、~/.gitconfig が無いと ~/.config/git/config に書く。
+  # git config --global は、~/.gitconfig が無いと ~/.config/git/config に記入する。
   # ~/.config/git はこのリポジトリへのリンクなので、名前とメールアドレスがリポジトリに入らないよう ~/.gitconfig を明示する。
   local file="$HOME/.gitconfig" key value prompt env_value
   for key in user.name user.email; do
@@ -295,7 +295,7 @@ stage_gitconfig() {
       continue
     fi
     git config --file "$file" "$key" "$value"
-    did "$file に $key を書いた"
+    did "$file に $key を記入した"
   done
 }
 
@@ -366,7 +366,7 @@ stage_win32yank() {
   did "win32yank.exe を ~/.local/bin に入れた"
 }
 
-# $RUBY_SCAN_DIR とその 1 つ下のディレクトリにある .ruby-version から、Ruby のバージョンを重複なく出す。
+# $RUBY_SCAN_DIR とその 1 つ下のディレクトリにある .ruby-version から、Ruby のバージョンを重複なく出力する。
 ruby_versions_wanted() {
   find "$RUBY_SCAN_DIR" -maxdepth 2 -name .ruby-version -type f 2>/dev/null |
     while IFS= read -r file; do
@@ -392,7 +392,7 @@ stage_ruby() {
   elif [ "$DRY_RUN" != "1" ]; then
     die "rbenv がありません。先に brew_bundle の段階を実行してください"
   fi
-  echo "[ruby] .ruby-version に書かれたバージョン: $(printf '%s' "$wanted" | tr '\n' ' ')"
+  echo "[ruby] .ruby-version に記載されたバージョン: $(printf '%s' "$wanted" | tr '\n' ' ')"
   while IFS= read -r version; do
     if printf '%s\n' "$installed" | grep -qx "$version"; then
       skipped "Ruby $version は入っている"

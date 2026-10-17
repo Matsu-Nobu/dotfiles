@@ -179,9 +179,9 @@ function Write-WezTermConfig([string]$WslUser) {
         Write-Skipped "$dest は最新"
         return
     }
-    # PowerShell 5.1 の Set-Content -Encoding UTF8 は BOM を付けるので、BOM なしの UTF-8 で書く。
+    # PowerShell 5.1 の Set-Content -Encoding UTF8 は BOM を付けるので、BOM なしの UTF-8 で出力する。
     [IO.File]::WriteAllText($dest, $content, (New-Object Text.UTF8Encoding($false)))
-    Write-Did "$dest を書いた"
+    Write-Did "$dest を出力した"
 }
 
 $wslUser = Install-WslUbuntu

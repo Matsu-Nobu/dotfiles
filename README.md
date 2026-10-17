@@ -8,9 +8,9 @@ gh repo clone <GitHub のユーザー名>/dotfiles ~/dotfiles
 ~/dotfiles/setup.sh
 ```
 
-`setup.sh` は、`~/.gitconfig` に Git の名前とメールアドレスが無ければ、ターミナルに入力を求める文を表示し、入力された値を `~/.gitconfig` に書く。`setup.sh` は終えた処理を次の実行で飛ばすので、何度実行してもよい。仕事のリポジトリを `~/workspace` に clone した後にもう一度実行すると、各リポジトリの `.ruby-version` に書かれた Ruby が入る。
+`setup.sh` は、`~/.gitconfig` に Git の名前とメールアドレスが無ければ、ターミナルに入力を求める文を表示し、入力された値を `~/.gitconfig` に記入する。`setup.sh` は終えた処理を次の実行で飛ばすので、何度実行してもよい。仕事のリポジトリを `~/workspace` に clone した後にもう一度実行すると、各リポジトリの `.ruby-version` に記載された Ruby が入る。
 
-`~/.gitconfig` を手で書くときは、`git config --file ~/.gitconfig` を使う。`~/.gitconfig` が無いときに `git config --global` を使うと、このリポジトリの `git/config` に書かれてしまう。
+`~/.gitconfig` に手で記入するときは、`git config --file ~/.gitconfig` を使う。`~/.gitconfig` が無いときに `git config --global` を使うと、このリポジトリの `git/config` に記入されてしまう。
 
 # Windows
 
@@ -29,8 +29,8 @@ WSL を初めて入れたときは、`setup.ps1` が再起動を求める文を�
 
 次のファイルは、ホームディレクトリに手で作る。Windows では、WSL の Ubuntu のホームディレクトリに作る。
 
-| ファイル | 用意するマシン | 書くこと |
+| ファイル | 用意するマシン | 記入すること |
 | --- | --- | --- |
 | `~/.zshrc.local` | すべて | 秘密情報と、仕事用の環境変数・alias。無ければ `setup.sh` が空のファイルを作る |
-| `~/.config/dotfiles/deny-patterns.txt` | このリポジトリにコミットするマシン | コミットに含めてはいけない勤め先の名前・社内のリポジトリ名・個人名を、1 行に 1 つの正規表現で書く。このファイルが無いと、コミットの前に動く Git のフックがコミットを止める |
-| `~/.claude/work-settings.json` | 仕事用のマシン | リポジトリに入れない、仕事用の Claude Code の設定（許可するコマンドや自動モードの規則）。`~/.zshrc.local` に `alias claude='claude --settings ~/.claude/work-settings.json'` と書くと、Claude Code がこのファイルを読む |
+| `~/.config/dotfiles/deny-patterns.txt` | このリポジトリにコミットするマシン | コミットに含めてはいけない勤め先の名前・社内のリポジトリ名・個人名を、1 行に 1 つの正規表現で記入する。このファイルが無いと、コミットの前に動く Git のフックがコミットを止める |
+| `~/.claude/work-settings.json` | 仕事用のマシン | リポジトリに入れない、仕事用の Claude Code の設定（許可するコマンドや自動モードの規則）。`~/.zshrc.local` に `alias claude='claude --settings ~/.claude/work-settings.json'` と記入すると、Claude Code がこのファイルを読む |

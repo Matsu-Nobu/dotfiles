@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run --allow-run=ps,tee --allow-read
 // Claude Code の hook として、応答の終了・許可待ち・入力待ちを、セッションの名前を付けて通知する。
 // 通知は OSC 777 の制御文字列として Claude Code の端末に書き込み、WezTerm が OS の通知として表示する。
-// Claude Code のタブを見ているときに通知を出さない判定は、WezTerm の notification_handling が行う。
+// Claude Code のタブを見ているときに通知を表示しない処理は、WezTerm の notification_handling の設定で行う。
 
 interface HookData {
   hook_event_name: "Stop" | "Notification" | "PermissionRequest"
@@ -18,7 +18,7 @@ const messageFor = (data: HookData): string | null => {
     case "PermissionRequest":
       return `許可を待っています（${data.tool_name}）`
     case "Notification":
-      // 許可待ちは PermissionRequest でツール名付きの通知を出すので、ここでは出さない。
+      // 許可待ちは PermissionRequest でツール名付きの通知を出力するので、ここでは出力しない。
       if (data.notification_type === "idle_prompt" || data.notification_type === "elicitation_dialog") {
         return "入力を待っています"
       }
