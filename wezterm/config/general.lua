@@ -1,6 +1,8 @@
 return {
    -- behaviours
    automatically_reload_config = true,
+   -- Windows と macOS では既定で、別のウィンドウから戻ってきたときの最初のクリックがウィンドウを前面に出すだけで終わり、リンクを開かない。
+   swallow_mouse_click_on_window_focus = false,
    use_ime = true, -- japanese input
    exit_behavior = 'CloseOnCleanExit', -- if the shell program exited with a successful status
    exit_behavior_messaging = 'Verbose',

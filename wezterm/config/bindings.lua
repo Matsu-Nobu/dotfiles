@@ -352,6 +352,44 @@ local mouse_bindings = {
       mods = 'CTRL',
       action = act.OpenLinkAtMouseCursor,
    },
+   -- マウス操作を受け取る TUI (Claude Code など) の画面では、mouse_reporting を指定しない割り当ては使われず、クリックが TUI に送られる。
+   -- mouse_reporting = true を指定した割り当ては、その画面でも WezTerm がクリックを受け取って処理する。
+   {
+      event = { Up = { streak = 1, button = 'Left' } },
+      mods = 'CTRL',
+      action = act.OpenLinkAtMouseCursor,
+      mouse_reporting = true,
+   },
+   -- ボタンを押したときのイベントも WezTerm が受け取る。
+   -- 押したイベントだけが TUI に届くと、TUI の中で文字の選択が始まったままになる。
+   {
+      event = { Down = { streak = 1, button = 'Left' } },
+      mods = 'CTRL',
+      action = act.Nop,
+      mouse_reporting = true,
+   },
+   -- 修飾キーなしの左ボタンも、マウス操作を受け取る TUI の画面で WezTerm が処理する。
+   -- 押す・ドラッグ・離すの 3 つをそろえて WezTerm に割り当てないと、TUI には一部のイベントだけが届いて操作が途切れる。
+   -- この 3 つは、マウス操作を受け取らない画面での WezTerm の既定の割り当てと同じ動作にしている。
+   -- その代わり、TUI には左ボタンのクリックとドラッグが届かない。
+   {
+      event = { Down = { streak = 1, button = 'Left' } },
+      mods = 'NONE',
+      action = act.SelectTextAtMouseCursor('Cell'),
+      mouse_reporting = true,
+   },
+   {
+      event = { Drag = { streak = 1, button = 'Left' } },
+      mods = 'NONE',
+      action = act.ExtendSelectionToMouseCursor('Cell'),
+      mouse_reporting = true,
+   },
+   {
+      event = { Up = { streak = 1, button = 'Left' } },
+      mods = 'NONE',
+      action = act.CompleteSelectionOrOpenLinkAtMouseCursor('ClipboardAndPrimarySelection'),
+      mouse_reporting = true,
+   },
 
    -- alternate screen buffer (Claude Code / less / vim 等の TUI) ではマウスホイールを
    -- PageUp/PageDown として送る。WezTerm デフォルトは wheel を ↑/↓ に変換するため、
