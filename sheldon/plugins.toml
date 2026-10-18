@@ -43,10 +43,6 @@ apply = ["defer"]
 github = "wfxr/forgit"
 apply = ["defer"]
 
-[plugins.zeno_zsh]
-github = 'yuki-yano/zeno.zsh'
-apply = ["defer"]
-
 [plugins.zsh-autopair]
 github = "hlissner/zsh-autopair"
 
