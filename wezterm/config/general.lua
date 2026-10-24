@@ -11,39 +11,43 @@ return {
 
    scrollback_lines = 20000,
 
+   -- URL として拾う文字は ASCII の表示できる文字だけにする。
+   -- `\S` や `\w` は日本語にも一致するので、URL の直後に続く全角の括弧や日本語まで URL に含めてしまう。
    hyperlink_rules = {
       -- Matches: a URL in parens: (URL)
       {
-         regex = '\\((\\w+://\\S+)\\)',
+         regex = "\\(([a-zA-Z][a-zA-Z0-9+.-]*://[!-'*-~]+)\\)",
          format = '$1',
          highlight = 1,
       },
       -- Matches: a URL in brackets: [URL]
       {
-         regex = '\\[(\\w+://\\S+)\\]',
+         regex = '\\[([a-zA-Z][a-zA-Z0-9+.-]*://[!-\\x5c^-~]+)\\]',
          format = '$1',
          highlight = 1,
       },
       -- Matches: a URL in curly braces: {URL}
       {
-         regex = '\\{(\\w+://\\S+)\\}',
+         regex = '\\{([a-zA-Z][a-zA-Z0-9+.-]*://[!-|~]+)\\}',
          format = '$1',
          highlight = 1,
       },
       -- Matches: a URL in angle brackets: <URL>
       {
-         regex = '<(\\w+://\\S+)>',
+         regex = '<([a-zA-Z][a-zA-Z0-9+.-]*://[!-=?-~]+)>',
          format = '$1',
          highlight = 1,
       },
       -- Then handle URLs not wrapped in brackets
+      -- 括弧は対になっているものだけを URL に含める。
+      -- 対になっていない閉じ括弧を含めると、`(URL)` の閉じ括弧まで URL になる。
       {
-         regex = '\\b\\w+://\\S+[)/a-zA-Z0-9-]+',
+         regex = "[a-zA-Z][a-zA-Z0-9+.-]*://(?:[!-'*-~]|\\([!-'*-~]*\\))*(?:[/a-zA-Z0-9_=#-]|\\([!-'*-~]*\\))",
          format = '$0',
       },
       -- implicit mailto link
       {
-         regex = '\\b\\w+@[\\w-]+(\\.[\\w-]+)+\\b',
+         regex = '[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)+',
          format = 'mailto:$0',
       },
    },
