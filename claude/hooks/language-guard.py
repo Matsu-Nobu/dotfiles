@@ -51,7 +51,8 @@ def is_user_turn(entry):
 
 def turn_texts(path):
     entries = []
-    with open(path, encoding="utf-8") as f:
+    # Claude Code の書く記録には、日本語を文字の途中で切った行（lastPrompt など）が混ざることがある。
+    with open(path, encoding="utf-8", errors="replace") as f:
         for line in f:
             try:
                 entries.append(json.loads(line))
