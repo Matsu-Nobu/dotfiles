@@ -22,6 +22,8 @@ brew "openssl@3"
 brew "libyaml"
 # Node.js は LTS の系列の node@24 を使う。keg-only なので link: true で PATH に出す。
 brew "node@24", link: true
+# Rust は rustup で入れ、各リポジトリの rust-toolchain.toml が使う版を決める。keg-only なので link: true で PATH に出す。
+brew "rustup", link: true
 brew "deno"
 brew "python"
 
