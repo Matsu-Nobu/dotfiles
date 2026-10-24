@@ -189,9 +189,11 @@ Claude は、チケットの対応者記入欄・PR の説明・ドキュメン�
 
 対話応答と、PR のレビューへの返信や Jira のコメントのような、おおむね 300 字までの短い文章には、この確認をしない。サブエージェントが読み終えるまで待つ時間が長いからである。短い文章は、Claude が文ごとに主語・対象・操作・条件を書き出して読み直してから書き込む。ユーザーが確認を通すよう求めたときは、対話応答でも確認する。
 
-### 実装作業はサブエージェントを起動して背景で進める
+### 実装作業はメインの会話で進め、サブエージェントに任せない
 
-ファイル編集 + spec 実行 + lint + commit を伴う実装作業全般は、 明示的な指示がなくてもサブエージェントを `run_in_background: true` で起動して背景で進める。 起動した旨を 1〜2 行で伝えてから次の話題に進む。 判定基準と例外は [rules/subagent.md](rules/subagent.md) を読む。
+Claude は、ファイル編集・テストの実行・lint・コミットを伴う実装作業を、メインの会話で自分で行う。サブエージェントは会話の文脈を受け取らないので、Claude が前提を説明し直す手間がかかり、説明から漏れた前提で実装を誤る。起動と結果の確認を待つ分、実装も遅くなる。
+
+サブエージェントに実装を任せてよいのは、互いに独立した作業を複数同時に進める必要があるときと、ユーザーがサブエージェントを使うよう明示的に指示したときだけである。任せるときの指示の書き方は [rules/subagent.md](rules/subagent.md) にある。
 
 ## 実装時に必ず守ること
 
@@ -213,7 +215,7 @@ Claude は、チケットの対応者記入欄・PR の説明・ドキュメン�
 | 文章（対話応答を除く）やコードコメントを書く時 | `~/.claude/rules/vocabulary.md` |
 | チケット・PR・ドキュメントに書き込む前の確認をする時 | `~/.claude/rules/reader-check.md` |
 | テストを書く・直す時 | `~/.claude/rules/testing.md` |
-| 実装作業の依頼を受けた時 | `~/.claude/rules/subagent.md` |
+| サブエージェントに実装を任せる時 | `~/.claude/rules/subagent.md` |
 | Confluence ページを作成・更新する時 | `~/.claude/rules/confluence.md` |
 
 コード編集とドキュメント編集とテスト編集については、 PreToolUse フックが該当ファイルの内容を自動で読み込ませる。 Markdown などの文書を編集するときは `writing-format.md` と `vocabulary.md` を、コードを編集するときは `code-comments.md`・`implementation.md`・`vocabulary.md` を読み込ませる。 Jira のチケット・Confluence のページ・GitHub の PR に書き込むときは、 PreToolUse フック (`~/.claude/hooks/inject-writing-rules.sh`) が `writing-format.md`・`vocabulary.md`・`reader-check.md` を読み込ませる。 セッションで最初の書き込みは、 フックが一度止めて規則を渡すので、 規則に沿って書き直し、 読み手の確認を通してから呼び出し直す。 Confluence ページの作成・更新ツールの呼び出し時も同じく、 PreToolUse フックが `confluence.md` を毎回読み込ませる。 フックが動かない環境では自分で Read する。
