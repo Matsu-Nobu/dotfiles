@@ -167,6 +167,7 @@
     "disableBypassPermissionsMode": "disable",
     "_disableAutoMode_DISABLED_BECAUSE": "10秒に一回承認を求められて生産性が著しく低下するため auto mode を無効化しない（元値: disableAutoMode=disable）"
   },
+  "model": "opus",
   "enableAllProjectMcpServers": true,
   "hooks": {
     "Stop": [
@@ -301,6 +302,7 @@
   "effortLevel": "medium",
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
+  "switchModelsOnFlag": false,
   "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
