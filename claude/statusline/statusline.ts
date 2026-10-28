@@ -140,8 +140,11 @@ function buildRateLimitDisplay(data: Record<string, unknown>): string {
 
 // Output
 const rateLimitDisplay = buildRateLimitDisplay(data)
+const modelName: string | undefined = data.model?.display_name
 
-if (totalTokens > 0) {
+const tokenPart = (() => {
+  if (totalTokens === 0) return "🟢 0 (0%)"
+
   const tokenDisplay = formatTokenCount(totalTokens)
   const percentage = Math.min(100, Math.round((totalTokens / COMPACTION_THRESHOLD) * 100))
 
@@ -155,16 +158,8 @@ if (totalTokens > 0) {
     return { color: "\x1b[32m", emoji: "🟢" }
   })()
 
-  const tokenPart = `${emoji} ${tokenDisplay} (${color}${percentage}%\x1b[0m)`
-  if (rateLimitDisplay) {
-    console.log(`${tokenPart} | ${rateLimitDisplay}`)
-  } else {
-    console.log(tokenPart)
-  }
-} else {
-  if (rateLimitDisplay) {
-    console.log(`🟢 0 (0%) | ${rateLimitDisplay}`)
-  } else {
-    console.log("🟢 0 (0%)")
-  }
-}
+  return `${emoji} ${tokenDisplay} (${color}${percentage}%\x1b[0m)`
+})()
+
+const parts = [modelName ? `\x1b[36m${modelName}\x1b[0m` : "", tokenPart, rateLimitDisplay].filter((part) => part !== "")
+console.log(parts.join(" | "))
