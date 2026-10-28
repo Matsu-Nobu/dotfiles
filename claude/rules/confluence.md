@@ -16,7 +16,9 @@ Confluence 独自の要素は `data-type` 属性で表現する。情報パネ�
 
 Claude は、Confluence にページを作ったら、そのページの幅を最大にする。ページの幅は本文ではなく、ページのプロパティ `content-appearance-published` と `content-appearance-draft` に保存されているので、`createConfluencePage` と `updateConfluencePage` では変えられない。Claude は、ページを作った直後に `~/.claude/bin/confluence-max-width.sh <ページの ID>` を実行する。このスクリプトは、Confluence の REST API v2 で、2 つのプロパティの値を、エディタで最大の幅を選んだときの値 `max` にする。
 
-Claude は、ページに置くすべての表を `<table data-layout="full-width">` と書き、すべてのコードブロックを `<pre data-breakout="full-width">` と書いて、どちらもページの全幅で表示させる。
+Claude は、ページに置くすべての表を `<table data-layout="default" data-width="1800">` と書き、すべてのコードブロックを `<pre data-breakout="full-width">` と書いて、どちらもページの全幅で表示させる。表を `data-layout="full-width"` で書いてはならない。幅を指定せずに `full-width` で書いた表は、2026-10-27 に表示が崩れた。崩れずに表示されている表は、どれも配置が `default`、幅が 1800 である。
+
+表の見た目は、表の配置（`layout`）・表の幅（`width`）・各列の幅（`colwidth`）の組み合わせで決まる。各列の幅の合計が表の幅と食い違うと、表が崩れる。Claude は、表を書き込むときに各列の幅を指定しない。指定が必要なときは、合計を表の幅（全幅なら約 1,800 px）に合わせる。表の配置か幅を変えるときは、各列の幅の指定も消すか、同じ比率で直す。書き込んだ後は、ページを ADF で取得し直し、すべての表の配置が `default`、幅が 1800 であることを確かめる。各列の幅の指定がある表については、その合計が表の幅と一致するかも確かめる。HTML や markdown で取得した本文には表の配置と幅が出てこないので、この確認には ADF を使う。表を足すときは、同じページで崩れずに表示されている表の配置と幅に合わせる。別のページから表を写すときも、写した表の配置と幅を、書き込むページの表に合わせる。
 
 ## マクロは data-type="extension" で書く
 
